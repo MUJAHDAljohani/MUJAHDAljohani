@@ -1,0 +1,55 @@
+#include <SevSeg.h> // Include the SevSeg library
+
+// Define the pins for the components
+#define PUMP_PIN 8
+#define BUZZER_PIN 4
+#define RELAY_PIN 12
+#define DATA_PIN 11 // Connects to the DS of 74HC595
+#define LATCH_PIN 10 // Connects to the ST_CP of 74HC595
+#define CLOCK_PIN 9 // Connects to the SH_CP of 74HC595
+
+SevSeg sevseg; // Initialize a seven segment controller object
+
+void setup() {
+  byte numDigits = 1;
+  byte digitPins[] = {7};
+  byte segmentPins[] = {6, 5, 3, 2, A0, A1, A2, A3};
+
+  sevseg.begin(COMMON_ANODE, numDigits, digitPins, segmentPins);
+  sevseg.setBrightness(90);
+
+  // Initialize the pins as output
+  pinMode(PUMP_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+  pinMode(RELAY_PIN, OUTPUT);
+}
+
+void loop() {
+  // Turn on the pump for 5 seconds
+  digitalWrite(PUMP_PIN, HIGH);
+  delay(5000);
+
+  // Turn off the pump and turn on the buzzer for 2 seconds
+  digitalWrite(PUMP_PIN, LOW);
+  digitalWrite(BUZZER_PIN, HIGH);
+  
+  sevseg.setNumber(1,0); // Display "1" on the seven segment display
+  sevseg.refreshDisplay(); // Must run repeatedly
+  
+  delay(2000);
+
+  // Turn off the buzzer and turn on the relay for 4 seconds
+  digitalWrite(BUZZER_PIN, LOW);
+  
+   sevseg.setNumber(2,0); // Display "2" on the seven segment display
+   sevseg.refreshDisplay(); // Must run repeatedly
+   
+   digitalWrite(RELAY_PIN, HIGH);
+   delay(4000);
+
+   sevseg.setNumber(3,0); // Display "3" on the seven segment display
+   sevseg.refreshDisplay(); // Must run repeatedly
+
+   // Turn off all components
+   digitalWrite(RELAY_PIN, LOW);
+}
