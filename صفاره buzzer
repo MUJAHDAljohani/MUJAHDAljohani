@@ -1,0 +1,15 @@
+#define RELAY_PIN 4  // the Arduino pin that controls the buzzer via relay
+
+// the setup function runs once when you press reset or power the board
+void setup() {
+  // initialize digital pin D4 as an output.
+  pinMode(RELAY_PIN, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  digitalWrite(RELAY_PIN, HIGH);  // turn on buzzer 2 seconds
+  delay(2000);
+  digitalWrite(RELAY_PIN, LOW);  // turn off buzzer 5 seconds
+  delay(5000);
+}
